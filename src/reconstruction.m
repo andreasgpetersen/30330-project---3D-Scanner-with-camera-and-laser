@@ -160,7 +160,7 @@ while(loop_count <= frame_N && hasFrame(v))
     py = P(:, 2);
     
     pz_w = triangulate_depth(u0, px, pixel_w, f_x, f_manual, phi, z_m, b_m, 0, false);
-    z_prime = triangulate_z_prime(u0, px, pixel_w, f_x, f_manual, phi, z_m, b_m, 0, false);
+    z_prime = (u0, px, pixel_w, f_x, f_manual, phi, z_m, b_m, 0, false);
     
     y_Matrix(:, loop_count) = -(py - v0).*sqrt(z_prime.^2+b_m.^2)/fy;
     
