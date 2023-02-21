@@ -1,0 +1,625 @@
+\begin{appendices}
+\section{CameraCalibration.cpp}\label{appendixA}
+
+
+\begin{minted}[linenos=true, numberblanklines=true, breaklines=true]{cpp}
+/*
+Thanks to https://github.com/spmallick/learnopencv/blob/master/ ...
+CameraCalibration/cameraCalibration.cpp
+*/
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <opencv2/opencv.hpp>
+#include <opencv2/calib3d/calib3d.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <stdio.h>
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+
+// Defining the dimensions of checkerboard
+int CHECKERBOARD[2]{ 5,8 };
+int square_size = 3; // 3 x 3cm
+
+int main()
+{
+	// Creating vector to store vectors of 3D points for each checkerboard image
+	std::vector<std::vector<cv::Point3f> > objpoints;
+
+	// Creating vector to store vectors of 2D points for each checkerboard image
+	std::vector<std::vector<cv::Point2f> > imgpoints;
+
+	// Defining the world coordinates for 3D points
+	std::vector<cv::Point3f> objp;
+	for (int i{ 0 }; i < CHECKERBOARD[1]; i++)
+	{
+		for (int j{ 0 }; j < CHECKERBOARD[0]; j++)
+			objp.push_back(cv::Point3f(j, i, 0));
+	}
+
+
+	// Extracting path of individual image stored in a given directory
+	std::vector<cv::String> images;
+	// Path of the folder containing checkerboard images
+
+	std::string path = "Z:/24-11-2020/calibration/best/*.png";
+
+	cv::glob(path, images);
+
+	cv::Mat frame, gray;
+	// vector to store the pixel coordinates of detected checker board corners 
+	std::vector<cv::Point2f> corner_pts;
+	bool success;
+	printf("\nNo. of images: %d\n", images.size());
+	
+	// Specifying size to resize image to if needed 
+	cv::Size dim;
+	dim.height = 1080;
+	dim.width = 1920;
+
+
+	// Looping over all the images in the directory
+	for (int i{ 0 }; i <images.size() ; i++) 
+	{
+		cout << i << endl;
+		// Read image in
+		frame = cv::imread(images[i]);
+		printf("Have read image in\n");
+
+		// Resize to desired size
+		cv::resize(frame, frame, dim, cv::INTER_AREA);
+		printf("Converted to desired size\n");
+
+		cv::cvtColor(frame, gray, cv::COLOR_RGB2GRAY);
+		printf("Converted color \n");
+
+		// Finding checker board corners
+		// If desired number of corners are found in the image then success = true  
+		success = cv::findChessboardCornersSB(gray, cv::Size(CHECKERBOARD[0], CHECKERBOARD[1]), corner_pts);
+
+		// If desired number of corner are detected,
+		// we refine the pixel coordinates and display
+		// them on the images of checker board
+		if (success)
+		{
+
+			printf("\nImage #%i", i);
+			printf("Found corners\n");
+			cv::TermCriteria criteria(cv::TermCriteria::EPS + cv::TermCriteria::COUNT, 30, 0.1);
+
+
+			// refining pixel coordinates for given 2d points.
+			cv::cornerSubPix(gray, corner_pts, cv::Size(11, 11), cv::Size(-1, -1), criteria);
+			printf("Have refined pixel coordinates\n");
+			// Displaying the detected corner points on the checker board. Only use if image is displayed
+			//cv::imshow("Image", frame);
+			//cv::drawChessboardCorners(gray, cv::Size(CHECKERBOARD[0], CHECKERBOARD[1]), corner_pts, success);
+
+			// Add object and image points to relevant arrays
+			objpoints.push_back(objp);
+			imgpoints.push_back(corner_pts);
+		}
+
+		else
+		{
+			printf("\nCould not detect corners for image %d\n", i);
+		}
+
+		// Only use if image is displayed
+		//cv::waitKey(0);
+	}
+
+	cv::destroyAllWindows();
+
+	cv::Mat cameraMatrix, distCoeffs, R, T;
+	cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
+
+	
+	// Performing camera calibration by
+	// passing the value of known 3D points (objpoints)
+	// and corresponding pixel coordinates of the
+	// detected corners (imgpoints)
+	
+	double rms = cv::calibrateCamera(objpoints, imgpoints, dim, cameraMatrix, distCoeffs, R, T);
+
+	// Print results to terminal if needed
+	//printf("RMS:\n");
+	//std::cout << "cameraMatrix : " << cameraMatrix << std::endl;
+	//std::cout << "distCoeffs : " << distCoeffs << std::endl;
+	//std::cout << "RMS :" << rms << std::endl;
+
+	
+
+	cv::Mat new_camera_matrix;
+	// Refining the camera matrix using parameters obtained by calibration
+	new_camera_matrix = cv::getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, dim, 1, dim, 0);
+	std::cout << "new_camera_matrix : " << new_camera_matrix << std::endl;
+
+
+
+
+
+	// print camera parameters to output file
+	FileStorage fs("camera_parameters.xml", FileStorage::WRITE);
+	fs << "nr_of_frames" << (int)images.size();
+	fs << "image_width" << (int)dim.width;
+	fs << "image_height" << (int)dim.height;
+	fs << "board_width" << (int)CHECKERBOARD[0];
+	fs << "board_height" << (int)CHECKERBOARD[1];
+	fs << "camera_matrix" << new_camera_matrix;
+	fs << "distortion_coefficients" << distCoeffs;
+	fs << "RMS" << (int)rms;
+
+		/* Code for performing undistortion of images if needed: 
+
+	cv::Mat image;
+	image = cv::imread(images[0]);
+	cv::Mat dst, map1, map2
+	cv::Size imageSize(cv::Size(image.cols, image.rows));
+
+
+	// map1 is x, map2 is y
+	cv::initUndistortRectifyMap(cameraMatrix, distCoeffs, cv::Mat(), new_camera_matrix, dim, CV_16SC2, map1, map2);
+	//
+	for (size_t i = 0; i < images.size(); i++)
+	{
+		// Read image in
+		frame = cv::imread(images[i]);
+
+		// Resize to desired size
+		cv::resize(frame, frame, dim, cv::INTER_AREA);
+
+		cv::cvtColor(frame, gray, cv::COLOR_RGB2GRAY);
+		success = cv::findChessboardCornersSB(gray, cv::Size(CHECKERBOARD[0], CHECKERBOARD[1]), corner_pts);
+		cv::drawChessboardCorners(frame, cv::Size(CHECKERBOARD[0], CHECKERBOARD[1]), corner_pts, success);
+		cv::resize(frame, frame, dim, cv::INTER_AREA);
+	
+		cv::remap(frame, dst, map1, map2, cv::INTER_LINEAR);
+		if (frame.empty())
+			continue;
+		printf("\nImage #%i", i);
+		cv::imshow("Image View", dst);
+		cv::waitKey(0);
+	}
+	
+	*/
+	return 0;
+}
+
+	
+	
+\end{minted}
+
+
+
+\section{Initialization for reconstruction in Matlab}
+\begin{minted}[breaklines,linenos,xleftmargin=0pt]{matlab}
+
+
+clear all;
+
+rot_axis_offset = 0.05;
+
+new_configuration = true
+if new_configuration
+    b_m = 0.553 + 0.096
+    z_m = 1.008 + 0.128
+    h = 1.335;
+    phi = atan(z_m/b_m)
+    phi_deg = phi*180/pi
+    
+    sqrt(z_m^2 + b_m^2)
+end
+
+vel = 10; %% 10 deg / s
+fps = 25; %% 25 frames per second
+
+deg_per_frame = vel / fps;
+
+if new_configuration
+    %fx = 4803.75;
+    %fy = 4794.07;
+    fx = 4804;
+    fy = 4794;
+    cx = 903.487;
+    cy = 409.888;
+end
+
+K = [fx 0 cx;
+     0 fy cy;
+     0 0 1]
+
+% ku and kv are the inverse of pixel size along x- and y-axis
+% au = ku * f  
+% av = kv * f
+% f = fx / ku;
+% f = fy / kv;
+% sensor_w = 22.3 mm
+% sensor_h = 14.9 mm
+
+sensor_w = 22.3/1000;
+sensor_h = 14.9/1000;
+
+sensor_res_x = 1920;
+sensor_res_y = 1080;
+
+pixel_h = 3.72e-6
+pixel_w = 3.71e-6
+
+ku = pixel_h^-1
+kv = pixel_w^-1
+
+use_f_manual = false;
+f_manual = 0.055; %% 55 mm
+
+f_x_mm = (fx / ku)*1000 %% mm
+f_y_mm = (fy / kv)*1000 %% mm
+
+f_x = fx/ku
+f_y = fy/kv
+
+u = 980-914 % example distance from center in pixels
+
+l = u*pixel_w; % distance converted to meters
+
+if use_f_manual
+    theta = atan(l/f_manual)
+else
+    theta = atan(l/f_x)
+end
+theta_deg = theta*180/pi
+
+z_prime = b_m*tan(phi-theta)
+
+z_depth_cm = (z_m-z_prime)*100
+disp(z_depth_cm)
+
+save 3Dscanner_math.mat b_m z_m h phi K ku kv pixel_w pixel_h rot_axis_offset f_manual f_x f_y vel fps deg_per_frame fx fy
+
+path = 'C:\Users\augus\Pictures\digiCamControl\Session1\spincross1laser.mov';
+v = VideoReader(path);
+
+frame = read(v,823);
+imshow(frame);
+frame = read(v,1);
+imshow(frame);
+
+img_w = 1920;
+img_h = 1080;
+
+\end{minted}
+
+
+\section{Point cloud reconstruction in Matlab}\label{appendix:pointcloudcode}
+
+\begin{minted}[breaklines,linenos,xleftmargin=0pt]{matlab}
+close all;
+clear all;
+load 3Dscanner_math.mat
+
+frame_by_frame = false;
+show_plot = false;
+
+cross = true % set to true to load video of the cross
+
+if cross
+    start_frame = 83;
+    y_upper_bound = 885;
+    y_lower_bound = 300;
+    path = 'C:\Users\augus\Pictures\digiCamControl\Session1\spincross2laser.mov';
+    v = VideoReader(path);
+else
+    start_frame = 177;
+    y_upper_bound = 890;
+    y_lower_bound = 470;
+    path = 'C:\Users\augus\Pictures\digiCamControl\Session1\laserwoodobject.mov';
+    v = VideoReader(path);
+    maxx = 1;
+    minn = 10e10;
+    while(hasFrame(v))
+
+        [bins, ~] = histcounts(rgb2gray(readFrame(v)), 255);
+        val  = bins(255);
+
+        if val > maxx
+            maxx = val;
+        end
+        if val < minn 
+            minn = val;
+        end
+    end
+    v = VideoReader(path);
+end
+
+image_w = v.Width;
+image_h = v.Height;
+
+
+dot_N = 28;
+epi_lines_x = zeros(dot_N, 1);
+epi_lines_y = zeros(dot_N, 1);
+epi_radii = zeros(dot_N, 1);
+epi_metric = zeros(dot_N, 1);
+frame_interval = 1;
+
+end_frame = 1005-start_frame;
+
+rot = deg_per_frame*[0:frame_interval:360/deg_per_frame]*pi/180;
+
+frame_N = length(rot);
+
+z_Matrix = zeros(60, frame_N); 
+y_Matrix = zeros(60, frame_N); 
+
+count = start_frame;
+
+gauss_threshold = 80;
+
+se = strel('diamond',3);
+
+loop_count = 1;
+while(loop_count <= frame_N && hasFrame(v))
+    
+    %if loop_count == 247
+    if loop_count == 1000 %54 
+        frame_by_frame = true;
+        show_plot = true;
+    end
+    
+    %se = strel('diamond',3);
+    % read frame and get lvl of saturation due to glare
+    cur = read(v,count);
+    
+    if ~cross
+        [N_cur, ~] = histcounts(rgb2gray(cur),255);
+        val = N_cur(255);
+        %lvl = val/maxx;
+        lvl = (val-minn)/(maxx-minn);
+        if lvl>1
+            lvl = 1;
+        end
+        lvl = lvl*100; % lvl is in percentage
+
+        % Filter image in HSV with saturation value adjusted to fit
+        [t5,masked] = colorMask_both_HSV(cur, lvl);
+        t5 = imclose(t5,se);
+    
+    else
+        % For the cross
+        t5 = cur(:,:,1)-imgaussfilt(cur(:,:,1),15) > gauss_threshold;
+    end
+    
+    centers = zeros(60, 2);
+    radii = zeros(60, 1);
+    radii_x = zeros(60, 1);
+    radii_y = zeros(60, 1);
+    metric = zeros(60, 1);
+    
+    B = bwboundaries(t5,'noholes');
+    if show_plot
+        figure(99);
+        imshow(cur);
+        hold on
+        title(sprintf("Frame %d", loop_count));
+    end
+    for k = 1:length(B)
+       %plot boundary
+       boundary = B{k};  
+       if length(boundary) < 5
+           continue;
+       end
+       
+       if (all(boundary(:,1)<y_upper_bound) && all(boundary(:,1)>y_lower_bound)) 
+          if show_plot
+              plot(boundary(:,2), boundary(:,1), 'g', 'LineWidth', 1)
+          end
+          centers(k, 2) = round(median(boundary(:,1))); % y center
+          centers(k, 1) = round(median(boundary(:,2))); % x center
+          radii_x = 0.5*( max(boundary(:,2)) - min(boundary(:,2)) );
+          radii_y = 0.5*( max(boundary(:,1)) - min(boundary(:,1)) );
+          radii(k, 1) = radii_y;
+          metric(k, 1) = radii(k, 1);
+       end     
+    end 
+    
+    
+    P = zeros(60, 3);
+    
+    if count == start_frame
+        M = [centers, radii, metric];
+        u0 = 980; % set biggest center u as u0
+        c = mean(nonzeros(centers(:,1)));
+        v0 = y_upper_bound; % set bottom of object as 0 height
+        M_sort = sortrows(M,2);
+        epi_lines_x = M_sort(:, 1);
+        epi_lines_y = M_sort(:, 2);
+        epi_radii = M_sort(:, 3);
+        epi_metric = M_sort(:, 4);
+        a = -0.0897;
+    else
+        for j = 1:length(epi_lines_y)
+            for i = 1:length(centers)
+                dy = abs(a*(centers(i, 1)-c)+epi_lines_y(j) - centers(i, 2));
+                    if dy < epi_radii(j)+1
+                        if P(j, 3) < metric(i)
+                            P(j, 1) = centers(i, 1);
+                            P(j, 2) = centers(i, 2);
+                            P(j, 3) = metric(i);
+                        end
+                    end
+            end    
+        end
+    end
+    
+    px = P(:, 1);
+    py = P(:, 2);
+    
+    pz_w = triangulate_depth(u0, px, pixel_w, f_x, f_manual, phi, z_m, b_m, 0, false);
+    z_prime = triangulate_z_prime(u0, px, pixel_w, f_x, f_manual, phi, z_m, b_m, 0, false);
+    
+    y_Matrix(:, loop_count) = -(py - v0).*sqrt(z_prime.^2+b_m.^2)/fy;
+    
+    z_Matrix(:, loop_count) = pz_w;
+    
+    % Plot
+    if show_plot
+
+        %viscircles(centers, radii, 'EdgeColor','b');
+        %plot(centers, 'bo')
+        hold on;
+        plot(P(:, 1), P(:, 2), 'gx');
+        xline(u0,'--c');
+        yline(v0,'--g');
+        yline(y_lower_bound,'--g');
+        xline(image_w/2, 'r')
+        
+        for i=33:1:length(epi_lines_y)
+            plot([0:1:1919],[-c:1:1919-c]*a+epi_lines_y(i), '--w', 'LineWidth', 0.5)
+        end
+        
+        disp('P = ')
+        disp(P)
+        
+        fprintf('Z depth in cm is: [');
+        fprintf('%g ', pz_w*100);
+        fprintf(']\n');
+    
+    end
+    
+    % Wait for user input to continue
+    if frame_by_frame
+        reply = input("Press any key to continue or Q to quit: ", 's');
+        if reply == 'Q'
+            break;
+        end
+    end
+     
+    count = count + frame_interval;
+    loop_count = loop_count + 1;
+    if mod(loop_count, 10) == 0
+        fprintf("Progress %0.2f%s \n", round(loop_count/frame_N * 100,3), '%');
+    end
+end
+
+%% Plots
+set(groot,'defaultfigureposition',[400 300 900 700])
+set(0,'DefaultTextInterpreter','latex');
+set(0,'DefaultAxesFontSize',14);
+set(0,'DefaultLineLineWidth',2);
+
+x_Matrix_rot = z_Matrix.*cos(rot);
+z_Matrix_rot = z_Matrix.*sin(rot);
+
+X_max = 0.25;
+Y_max = 0.25;
+
+
+fig = figure;
+line0 = 1;
+for i = line0:1:frame_N
+    %X = x_Matrix_rot(1:dot_N, i);
+    %Y = z_Matrix_rot(1:dot_N, i);
+    X = x_Matrix_rot(1:end, i);
+    Y = z_Matrix_rot(1:end, i);
+    Z = y_Matrix(1:end, i);
+    X((X > X_max) | (X < -X_max)) = nan;
+    Y((Y > Y_max) | (Y < -Y_max)) = nan;
+    plot3(X, Y, Z, 'r.');
+    hold on;
+    
+end
+grid on;
+xlim([-X_max X_max]);
+ylim([-Y_max Y_max]);
+xlabel('Z');
+ylabel('X');
+zlabel('Y');
+axis equal;
+
+for i = 1:dot_N
+    X = x_Matrix_rot(i, 1:end);
+    Y = z_Matrix_rot(i, 1:end);
+    Z = y_Matrix(i, 1:end);
+    X((X > X_max) | (X < -X_max)) = nan;
+    Y((Y > Y_max) | (Y < -Y_max)) = nan;
+    plot3(X, Y, Z, 'r.');
+    
+    hold on;
+end
+grid on;
+xlim([-X_max X_max]);
+ylim([-Y_max Y_max]);
+xlabel('Z [m]');
+ylabel('X [m]');
+zlabel('Y [m]');
+axis equal;
+title("Point cloud reconstruction")
+
+set(fig,'Units','Inches');
+pos = get(fig,'Position');
+set(fig,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)])
+print(fig,'crossPC1','-dpdf','-r0')
+
+X = reshape(x_Matrix_rot,[],1);
+Y = reshape(z_Matrix_rot,[],1);
+Z = reshape(y_Matrix,[],1);
+X((X > X_max) | (X < -X_max)) = nan;
+Y((Y > Y_max) | (Y < -Y_max)) = nan;
+
+PC_matrix = [X(:), Y(:), Z(:)];
+PC_matrix(any(isnan(PC_matrix), 2), :) = [];
+
+%% Export point cloud as .xyz file
+fID = fopen('3DPointCloud.xyz' , 'w');
+fprintf(fID,'%d\n',length(PC_matrix)); 
+fprintf(fID,'\n'); 
+for i=1:length(PC_matrix)-1 
+    fprintf(fID,'N     %16.10f     %16.10f     %16.10f\n' ,  PC_matrix(i,:));
+end
+fprintf(fID,'N     %16.10f     %16.10f     %16.10f' ,  PC_matrix(end,:));
+fclose(fID);
+
+\end{minted}
+
+
+\section{Other functions}
+
+\begin{minted}[breaklines,linenos,xleftmargin=0pt]{matlab}
+function z_depth = triangulate_depth(u0, px, pixel_w, f_x, f_manual, phi, z_m, b_m, rot_axis_offset, use_f_manual)
+    u = px - u0; % distance from center in pixels
+
+    l = u*pixel_w; % distance converted to meters
+    
+    if use_f_manual
+        theta = atan(l/f_manual);
+    else
+        theta = atan(l/f_x);
+    end
+    
+    z_prime = b_m.*tan(phi-theta);
+    
+    z_depth = (z_m-z_prime) + rot_axis_offset;
+
+end
+
+function z_prime = triangulate_z_prime(u0, px, pixel_w, f_x, f_manual, phi, ~, b_m, ~, use_f_manual)
+    u = px - u0; % distance from center in pixels
+
+    l = u*pixel_w; % distance converted to meters
+    
+    if use_f_manual
+        theta = atan(l/f_manual);
+    else
+        theta = atan(l/f_x);
+    end
+    
+    z_prime = b_m.*tan(phi-theta);
+
+end
+
+\end{minted}
+
+\end{appendices}

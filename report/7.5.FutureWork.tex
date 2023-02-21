@@ -1,0 +1,17 @@
+\newpage
+\section{Future work}
+
+Several aspect could be worked on in order to improve the developed system. Some to these aspects will now be covered.\\
+
+Firstly, the point cloud reconstruction fidelity could be improved by increasing the density of the laser dots being projected onto the object. This way, more depth information could be extracted along the vertical axis of the object. The problem with doing this, as previously mentioned, would be that the detection algorithm would also have to improved in order to still distinguish the individual dots.\\   
+
+Another field where the system could be improved is in the point could reconstruction itself. The addition of a polygon mesh would result in a model which could be directly imported as a 3D object and used for creating gaming environments or 3D printing.\\
+
+In this paper we only scanned a few carefully selected objects, and the results are only based upon these. Therefore, future work entail to further develop the system to be more robust to different shapes, occlusions and different types of surfaces. Some surfaces create more glare and reflections, while others absorb more light. This could negatively influence the quality of the result depending on the object. \\
+
+Currently, the objects are only recreated using binary values (dot present vs not present). This means that the objects in the finished 3D rendering holds no color information. A second video recording the rotation of the object with the structured light source turned off, and the regular lights turned on could be used to add color to the scan. By using the fact that the object rotates at constant speed, each detected feature point of the first video could be correlated to a point in color on the second video. This gives each point a corresponding color, that ultimately enables the 3D model to appear in RGB.\\
+
+
+As seen throughout the report, a 3D scan has multiple intricate steps. Eventually, it would be desireable to design a "plug-n-play" solution. Ideally, the solution should only need the user to place an object on the rotating stage, and push a button to start. All the subsequent steps would be autonomously performed. A simple way of doing this, would be to have a single computer or microcontroller controlling the camera through OpenCV and the stage through its proprietary software, automating the use of both by a script. Following this, the script would run the recorded video through the designed point-cloud creation software and display the result. If one only moves the object, a calibration of the camera only needs to be done once when building the setup. This would result in quicker, easier and more user-friendly 3D scans.
+
+

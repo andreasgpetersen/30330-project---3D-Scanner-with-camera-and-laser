@@ -1,0 +1,85 @@
+\ProvidesPackage{preamble}
+
+\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
+%\usepackage[table]{xcolor}% http://ctan.org/pkg/xcolor
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\definecolor{brickred}{rgb}{0.8, 0.25, 0.33}
+\definecolor{maple}{RGB}{150, 10, 13}
+\definecolor{lime(web)}{rgb}{0.0, 1.0, 0.0}
+\usepackage{fancyhdr}
+\iffalse
+\usepackage[danish]{babel}
+\fi
+\usepackage[american]{babel}
+%\usepackage{biblatex}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{placeins} % float barrier
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage[space]{grffile}
+\usepackage[hidelinks]{hyperref}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{lastpage}
+\usepackage{siunitx}
+\usepackage{epstopdf}
+\usepackage{amsmath}
+\usepackage{multicol}
+\usepackage{pdfpages}
+\usepackage{todonotes}
+%\usepackage{fixltx2e}
+\usepackage[]{minted}
+\usepackage{import}
+\usepackage[toc,page]{appendix}
+%\usepackage{natbib}
+%\setcitestyle{square}
+\usepackage{url}
+\usepackage[en-US]{datetime2} %Skift til "en-US" eller "danish"
+\graphicspath{{figure/}} %Adds standard file path for pics
+\textwidth=16.5cm
+\textheight=24cm
+\voffset=-60pt
+\hoffset=-40pt
+\setlength{\parindent}{0cm} %No indentation in new paragraph 
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\usepackage[export]{adjustbox}
+\setlength{\headheight}{15pt}
+\newcommand{\me}{\mathrm{e}}
+\makeatletter
+\newcommand{\damonthyeardate}{%
+  \DTMdanishmonthname{\@dtm@month}, \@dtm@year} %Sprog
+\makeatother
+\makeatletter
+\newcommand{\enmonthyeardate}{%
+  \DTMenglishmonthname{\@dtm@month}, \@dtm@year} %Sprog
+\makeatother
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+
+% colored table cells
+\definecolor{green}{rgb}{0.1,0.1,0.1}
+\newcommand{\emptycell}{\cellcolor{black}}  %{0.9}
+
+\author{s163933}
+
+\pagestyle{fancy}
+\fancyhf{} 
+\lhead{} % Fag samt opgave
+\rhead{\damonthyeardate} % afleveringsmåned, år
+\cfoot{\thepage\ af\ \pageref*{LastPage}}
+
+\usepackage{tasks}
+ \DeclareInstance{tasks}{myitemize}{default}
+{
+%enumerate = false ,
+label-width = 1.125em,
+label-offset = 0.6em,
+label-format = \bfseries\color{black}
+}
+\settasks{style = myitemize, column-sep = 2em}%
+\pagestyle{plain}%

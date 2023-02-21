@@ -1,0 +1,27 @@
+\section*{Abstract}
+
+
+% new
+This project concentrates on constructing, deriving and programming a system that can perform 3D profiling of an object that moves with constant speed. The object will be rotating on a stand and a dotted line laser will be used as the structured light source. The focus is to create a proof-of-concept rather than a complete and autonomous plug-n-play system.\\ 
+
+
+In order to develop a simple yet functional 3D scanner, the following four tasks were identified:
+1) A suitable test setup needs to be actualized for collecting data of the object while it is illuminated by the laser and rotating simultaneously. This is required to get good and usable data. 2) By using trigonometry, a mathematical relation between the depth of the object and horizontal displacement of the laser must be derived to acquire 3D information of the target. 3) To correctly scale the size of the object using the mathematical relations found, the intrinsic and extrinsic parameters of the camera must be computed using camera calibration. 4) In order to build the 3D model using a point cloud, the feature points from the data collection have to be extracted correctly. Different methods and approaches is evaluated, to find the optimal solution. 
+
+By following the outlined steps, a simple 3D scanner was developed. An operative test setup was build and a mathematical relation derived. The optimal feature extraction method was found to be a combination of using Gaussian blur and Moore neighborhood tracing to robustly extract and detect feature points. The scanned objects were recreated as digital 3D models with a reasonable degree of precision. An upper bound on the expected precision was found as well, to evaluate the performance of the system even better. Keeping in mind the equipment and approach used, the scanner is successful in recreating 3D models of the scanned objects. 
+
+
+% old
+% This project concentrates on constructing, deriving and programming a system that can perform 3D profiling of an object moving with constant speed. A structured light source is used to scan the object. The focus is on creating a proof-of-concept rather than a complete stand-alone system. A camera is used to record video of an object rotating on a stage, with a dotted line laser hitting the object.The camera is held at an angle relative to the laser. \\
+
+% The functional 3D scanner is implemented through four steps: 1) Creating a suitable test setup for collecting data of the object rotating with the laser hitting its center. 2) Using trigonometry to mathematical describe depth using horizontal displacement. Identifying limitations in resolution, and potential pitfalls. 3) Calibrating the camera and computing intrinsic as well as extrinsic parameters. These are used to correctly scale the mathematical relation of depth. 4) Extracting the desired features by finding the optimal method through evaluation of various methods, to finally compute the 3D model of the object using a point cloud. 
+
+% The proposed solution works, and a functional 3D scanner has been developed. The scanned objects were recreated as digital 3D models with a reasonable degree of precision and an upper bound for the expected depth accuracy was found. The final feature extraction method uses Gaussian blurring and Moore neighborhood tracing. 
+
+
+
+% In conclusion it has been shown that the overall objective of developing a functional 3D scanner has been fulfilled. Using knowledge of camera models and trigonometry a mathematical was first developed which was able to estimate the depth of an object by relating how a series of vertical structured light beams is deformed over the surface of the object. Using knowledge of camera calibration it was possible to scale the found depth estimates to the correct real world values while also correcting for unwanted radial distortion effects caused by the lenses inside the camera.\todo{I virkeligheden har vi ikke brugt vores undistortion...}\\
+
+% By rotating the object a full 360 degrees it was then possible to obtain a full three dimensional reconstruction. After analysing the found mathematical model, it was possible to derive an upper bound for the expected depth precision and it was furthermore established that the location of the camera, object and light source has a large impact on this maximum theoretical depth precision. It was also found, however, that depending on the maximum depth variation of object, the optimal setup will be different.\\
+
+% Using several different methods of image analysis like erosion, HSV-thresholding, contouring algorithms and epipolar geometry, it was possible to detect the location of the structured light beams on the rotating object. In this regard, the effectiveness of each of these methods was assessed before finally the most reliable method was found. Despite several tests, however, it was concluded that depending on the lighting conditions and the reflective properties of the object the optimal detection method will be different.\\

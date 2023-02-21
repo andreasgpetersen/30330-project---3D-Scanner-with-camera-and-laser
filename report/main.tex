@@ -1,0 +1,51 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{preamble}
+
+\begin{document}
+\thispagestyle{plain}
+\pagenumbering{roman}
+
+\iffalse
+\begin{figure}[H]
+\centering
+    \includegraphics[scale=0.8]{pdf-filer/HomeAssignment2FrontPage.pdf}
+\end{figure}
+\fi
+
+\input{forside}
+\newpage
+\import{WriteLast/}{abstract}
+\import{WriteLast/}{preface}
+\cleardoublepage\pagenumbering{arabic}
+\clearpage
+\tableofcontents
+
+\listoffigures
+\newpage
+\import{}{1.Intro}
+
+
+\newpage
+\import{}{2.Reconstruction}
+\import{}{3.CameraCalibration}
+\import{}{4.ImageAnalysis}
+\import{}{5.Results}
+%\import{}{6.5.Fejlkilder}
+\import{}{6.Discussions}
+\import{}{7.Conclusion}
+\import{}{7.5.Futurework}
+\newpage
+
+% \bibliographystyle{ieeetr}%\bibliographystyle{plainnat}%\bibliographystyle{unsrtnat}%\bibliographystyle{dinat}
+% \bibliography{references}
+%\bibliographystyle{ieeetr} %Used BibTeX style is unsrt %siam
+\bibliographystyle{plainurl}
+\bibliography{references}
+
+\newpage
+\import{}{8.Bilag}
+
+
+
+\end{document}
