@@ -29,4 +29,8 @@ Stack of wooden blocks    |  Point cloud reconstruction of wooden blocks
 
 
 
-![Stack of wooden blocks]((https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wooddimensions.png) "Stack of wooden blocks" =20%x) ![Point cloud reconstruction of wooden blocks]((https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wood_pointcloud.png) "Point cloud reconstruction of wooden blocks" =75%x)
+<p align="center">
+  <img alt="Light" src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wooddimensions.png" width="45%">
+&nbsp; &nbsp; &nbsp; &nbsp;
+  <img alt="Dark" src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wood_pointcloud.png" width="45%">
+</p>
