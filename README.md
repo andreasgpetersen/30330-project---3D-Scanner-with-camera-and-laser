@@ -4,7 +4,7 @@ Final project for course 30330 - Image analysis on Microcomputer @ DTU. Created 
 
 This project concentrates on constructing, deriving and programming a system that can per- form 3D profiling of an object that moves with constant speed. The object will be rotating on a stand and a dotted line laser will be used as the structured light source. The focus is to create a proof-of-concept rather than a complete and autonomous plug-n-play system. The object was filmed with a DSLR camera at an angle while a laser pointer lit up the object. The laser point had a spectral filter on which created a long vertical line of several dots. The test object to be scanned was a black cross. 
 
-![Scanning setup]()
+![Scanning setup](https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/setup_2.png)
 
 
 In order to develop a simple yet functional 3D scanner, the following four tasks were iden- tified: 
