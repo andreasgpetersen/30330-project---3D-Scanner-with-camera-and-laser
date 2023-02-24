@@ -18,9 +18,13 @@ By following the outlined steps, a simple 3D scanner was developed. An operative
 
 The scanned objects were recreated as digital 3D models with a reasonable degree of precision. An upper bound on the expected precision was found as well, to evaluate the performance of the system even better. Keeping in mind the equipment and approach used, the scanner is successful in recreating 3D models of the scanned objects.
 
-Cross-shaped object       |  Point cloud reconstruction of cross-shaped object
+Cross-shaped object       |  Point cloud reconstruction
 :-------------------------:|:-------------------------:
-<img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/crossdimensions.png" width=50%>  |  ![](https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/cross_reconstruction.png)
+<img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/crossdimensions.png" width=50%>  |  <img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/cross_reconstruction.png" width=50%>)
+
+Stack of wooden blocks       |  Point cloud reconstruction
+:-------------------------:|:-------------------------:
+<img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wooddimensions.png" width=50%>  |  <img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wood_pointcloud.png" width=50%>)
 
 Cross-shaped object and the point cloud reconstruction:
 <p align="center">
