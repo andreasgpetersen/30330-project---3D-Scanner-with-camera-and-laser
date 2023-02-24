@@ -17,11 +17,12 @@ In order to develop a simple yet functional 3D scanner, the following four tasks
 By following the outlined steps, a simple 3D scanner was developed. An operative test setup was build and a mathematical relation derived. The optimal feature extraction method was found to be a combination of using Gaussian blur and Moore neighborhood tracing to robustly extract and detect feature points. 
 
 The scanned objects were recreated as digital 3D models with a reasonable degree of precision. An upper bound on the expected precision was found as well, to evaluate the performance of the system even better. Keeping in mind the equipment and approach used, the scanner is successful in recreating 3D models of the scanned objects.
-
+<center>
 Cross-shaped object       |  Point cloud reconstruction
 :-------------------------:|:-------------------------:
-<img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/crossdimensions.png" width=400px>  |  <img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/cross_reconstruction.png" width=400px>)
+<img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/crossdimensions.png" width=500px>  |  <img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/cross_reconstruction.png" width=500px>)
 
 Stack of wooden blocks       |  Point cloud reconstruction
 :-------------------------:|:-------------------------:
-<img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wooddimensions.png" width=400px>  |  <img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wood_pointcloud.png" width=400px>)
+<img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wooddimensions.png" width=500px>  |  <img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wood_pointcloud.png" width=500px>)
+ </center>
