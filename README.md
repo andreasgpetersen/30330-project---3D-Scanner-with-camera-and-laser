@@ -20,7 +20,7 @@ The scanned objects were recreated as digital 3D models with a reasonable degree
 
 Cross-shaped object       |  Point cloud reconstruction of cross-shaped object
 :-------------------------:|:-------------------------:
-![](https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/crossdimensions.png)  |  ![](https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/cross_reconstruction.png)
+<img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/crossdimensions.png" width=50%>  |  ![](https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/cross_reconstruction.png)
 
 Cross-shaped object and the point cloud reconstruction:
 <p align="center">
