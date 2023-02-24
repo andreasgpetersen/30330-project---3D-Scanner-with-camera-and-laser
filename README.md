@@ -20,23 +20,8 @@ The scanned objects were recreated as digital 3D models with a reasonable degree
 
 Cross-shaped object       |  Point cloud reconstruction
 :-------------------------:|:-------------------------:
-<img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/crossdimensions.png" width=50%>  |  <img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/cross_reconstruction.png" width=50%>)
+<img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/crossdimensions.png" width=400px>  |  <img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/cross_reconstruction.png" width=400px>)
 
 Stack of wooden blocks       |  Point cloud reconstruction
 :-------------------------:|:-------------------------:
-<img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wooddimensions.png" width=50%>  |  <img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wood_pointcloud.png" width=50%>)
-
-Cross-shaped object and the point cloud reconstruction:
-<p align="center">
-  <img alt="Cross-shaped object diagram" src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/crossdimensions.png" width="45%">
-&nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="Point cloud cross-shaped object" src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/cross_reconstruction.png" width="45%">
-</p>
-
-
-Stack of wooden blocks and the point cloud reconstruction:
-<p align="center">
-  <img alt="Wooden blocks diagram" src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wooddimensions.png" width="45%">
-&nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="Point cloud wooden blocks" src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wood_pointcloud.png" width="45%">
-</p>
+<img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wooddimensions.png" width=400px>  |  <img src="https://github.com/andreasgpetersen/30330-project---3D-Scanner-with-camera-and-laser/blob/main/report/figures/reconstruction/wood_pointcloud.png" width=400px>)
